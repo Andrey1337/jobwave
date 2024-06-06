@@ -35,7 +35,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Region::class, 'region_id');
     }
-
+    public function resume()
+    {
+        return $this->hasOne(Resume::class);
+    }
+    
     /**
      * The attributes that should be hidden for serialization.
      *

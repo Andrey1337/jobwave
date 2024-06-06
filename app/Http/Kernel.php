@@ -51,10 +51,10 @@ class Kernel extends HttpKernel
 
         ],
 
-        'job_seeker' => [ // Добавляем отдельную группу middleware для соискателей
-            \App\Http\Middleware\RedirectIfAuthenticated::class,
-            \App\Http\Middleware\RedirectIfJobSeekerAuthenticated::class,
-        ],
+        // 'job_seeker' => [ // Добавляем отдельную группу middleware для соискателей
+        //     \App\Http\Middleware\RedirectIfAuthenticated::class,
+        //     \App\Http\Middleware\RedirectIfJobSeekerAuthenticated::class,
+        // ],
     ];
 
     /**
@@ -76,5 +76,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'guest.only' => \App\Http\Middleware\GuestOnly::class,
     ];
 }

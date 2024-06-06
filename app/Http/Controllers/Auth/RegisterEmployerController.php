@@ -54,7 +54,7 @@ class RegisterEmployerController extends Controller
             $company->logo = $imagePath;
         } else {
             // Если логотип не был загружен, установите путь к изображению по умолчанию
-            $company->logo = 'default_logo.svg'; // Путь к изображению по умолчанию
+            $company->logo = 'logos/default_logo.svg'; // Путь к изображению по умолчанию
         }
         
         $company->password = Hash::make($request->password); // Хэширование пароля

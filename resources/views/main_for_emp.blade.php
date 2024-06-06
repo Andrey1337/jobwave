@@ -8,7 +8,7 @@
         <div class="greeting_block">
             <p class="greet_h mulishB fs-sm-1">Разместите свою вакансию на <span class="k2db">JobWave</span></p>
             <p class="greet_p mulish16r">Находите сотрудников среди тех, кто хочет работать у вас. JobWave - сервис топ-50 по поиску сотрудников в РФ</p>
-            <a href="#" class="btn_bigger_main">Разместить вакансию</a>
+            <a href="{{route('search_main')}}" class="btn_bigger_main">Разместить вакансию</a>
         </div>
     </div>
 </section>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <a href="#" class=" btn_under_where_to_begin">Начать подбор на JobWave</a>
+        <a href="{{route('search_main')}}" class=" btn_under_where_to_begin">Начать подбор на JobWave</a>
 
     </div>
 </section>
@@ -79,7 +79,7 @@
             <div class="vacancy_on_jobwave_text_block flex-wrap align-content-center flex-lg-nowrap align-content-lg-normal">
                 <p class="vacancy_on_jobwave_h mulishb">Почему стоит разместить вакансию на <span class="k2db">JobWave</span>?</p>
                 <p class="vacancy_on_jobwave_p mulishr">Вакансия - это предложение о работе, включающее в себя описание должности, требования к соискателю и предлагаемые условия труда.</p>
-                <a href="#" class="btn_bigger_main btn_bigger_main_vacancy ">Разместить вакансию от 999 ₽</a>
+                <a href="{{route('search_main')}}" class="btn_bigger_main btn_bigger_main_vacancy ">Разместить вакансию от 999 ₽</a>
             </div>
     
             <div class="vacancy_on_jobwave_images_blocks flex-wrap align-content-center flex-lg-nowrap align-content-lg-normal">

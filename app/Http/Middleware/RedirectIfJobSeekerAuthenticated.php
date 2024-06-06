@@ -18,7 +18,7 @@ class RedirectIfJobSeekerAuthenticated
     {
         if (Auth::guard('web')->check()) {
             // Если пользователь аутентифицирован как соискатель, перенаправляем его
-            return redirect('/dashboard_user');
+            return redirect()->back();
         }
 
         return $next($request);

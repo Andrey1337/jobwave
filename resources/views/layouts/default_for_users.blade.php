@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{asset('bootstrap/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{asset('bootstrap/css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>JobWave</title>
 </head>
 <body>
@@ -18,10 +20,10 @@
 <header class="header">
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid container_main">
-            <div class="logo_block">
-                <img src="{{ asset('img/logo/logo.svg')}}" class="logo_img_header img-fluid" alt="logo">
-                <a href="{{route('main_for_emp')}}" class="navbar-brand logo_p k2dr fs-2 c252">JobWave</a>
-            </div>
+        <div class="logo_block">
+                <a href="{{route('main_for_emp')}}" class="navbar-brand logo_p k2dr fs-2 c252">
+                <img src="{{asset('img/logo/logo.svg')}}" class="logo_img_header img-fluid" alt="logo">JobWave</a>
+        </div>
             
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,13 +36,13 @@
                 <a class="nav-link mulish16r m-auto btn_outline_14 pforbo14 mulish14b" href="{{ route('applicant.resume.create') }}">Создать резюме</a>
                 </li>
                 <li class="nav-item auths_btns m-auto">
-                <a class="nav-link mulish16r" href="#">Вакансии</a>
+                <a class="nav-link mulish16r" href="{{route('search_main')}}">Вакансии</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link mulish16r" href="#">О нас</a>
+                <a class="nav-link mulish16r" href="{{route('about_company')}}">О нас</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link mulish16r" href="#">Контакты</a>
+                <a class="nav-link mulish16r" href="{{route('contacts')}}">Контакты</a>
                 </li>
                 <li class="nav-item auths_btns m-auto">
                 <a class="nav-link mulish16r" href="{{route('applicant.login')}}">Вход</a>
@@ -62,32 +64,30 @@
 <footer class="footer">
     <div class="content_footer container_main w-100 row justify-content-xxl-center justify-content-xl-center justify-content-lg-center justify-content-md-normal container-md g-xl-0 g-xxl-0 g-lg-4 g-md-5 g-sm-5 g-xs-5  justify-content-sm-normal justify-content-xs-normal">
         <div class="logo_block_footer col d-xxl-flex d-xl-flex d-lg-none d-md-none d-sm-none d-xs-none">
+            <a href="{{route('main_for_emp')}}" class="navbar-brand2 logo_footer k2dr fs-2 c252">
             <img src="{{ asset ('img/logo/logo_footer.svg')}}" class="logo_img_header img-fluid" alt="logo">
-            <a href="{{route('main_for_emp')}}" class="navbar-brand logo_footer k2dr fs-2 c252">JobWave</a>
+            JobWave</a>
         </div>
 
         <div class="links_footer d-flex flex-column col-2 col-lg-3 col-md-2 col-sm-2  w-auto">
-            <a href="#" class="footer_link mulish16rfff">О компании</a>
-            <a href="#" class="footer_link mulish16rfff">Новости</a>
-            <a href="#" class="footer_link mulish16rfff">Поиск вакансий</a>
-            <a href="#" class="footer_link mulish16rfff">Партнеры</a>
-            <a href="#" class="footer_link mulish16rfff">Политика конфиденциальности</a>
+            <a href="{{route('about_company')}}" class="footer_link mulish16rfff">О компании</a>
+            <a href="{{route('search_main')}}" class="footer_link mulish16rfff">Поиск вакансий</a>
+            <a href="{{route('privacy_policy')}}" class="footer_link mulish16rfff">Политика конфиденциальности</a>
         </div>
 
         <div class="links_footer d-flex flex-column col-2 col-lg-3 col-md-2 col-sm-2  w-auto">
-            <a href="#" class="footer_link mulish16rfff">Вакансии</a>
-            <a href="#" class="footer_link mulish16rfff">Вход/Регистрация</a>
-            <a href="#" class="footer_link mulish16rfff">Помощь</a>
-            <a href="#" class="footer_link mulish16rfff">Советы для соискателей</a>
+            <a href="{{route('applicant.login')}}" class="footer_link mulish16rfff">Вход/Регистрация</a>
+            <a href="{{route('help_page')}}" class="footer_link mulish16rfff">Помощь</a>
+            <a href="{{route('contacts')}}" class="footer_link mulish16rfff">Контакты</a>
         </div>
 
         <div class="links_footer d-flex flex-column col-2 col-lg-3 col-md-2 col-sm-2  w-auto">
-            <a href="#" class="footer_link mulish16rfff">4ekagobro@mail.ru</a>
-            <a href="#" class="footer_link mulish16rfff">+7-985-482-82-48</a>
+            <a href="mailto:support@jobwave.ru?subject=Общий вопрос" class="footer_link mulish16rfff">support@jobwave.ru</a>
+            <a href="tel:+79854828248" class="footer_link mulish16rfff">+7-985-482-82-48</a>
         </div>
 
         <div class="links_footer d-flex flex-column col-2 col-lg-3 col-md-2 col-sm-2  w-auto">
-            <a href="#" class="footer_link"><img src="{{ asset ('img/footer/vk.svg')}}" alt="vk"></a>
+            <a href="https://vk.com" class="footer_link"><img src="{{ asset ('img/footer/vk.svg')}}" alt="vk"></a>
         </div>
     </div>
     <hr class="hr_footer container_hr img-fluid">

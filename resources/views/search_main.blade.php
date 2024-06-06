@@ -9,7 +9,7 @@
 <section class="top_search_block_area">
     <div class="container_main">
         <div class="position_search_inp_top">
-            <form action="{{ route('search_main') }}" method="POST" class="d-flex search_for_emp_function form_searches justify-content-center justify-content-lg-start form_main_search_top" role="search">
+            <form id="search_form_top" action="{{ route('search_main') }}" method="POST" class="d-flex search_for_emp_function form_searches justify-content-center justify-content-lg-start form_main_search_top" role="search">
                 @csrf
                 <input class="form-control search_inp search_inp2" type="search" placeholder="Профессия, должность или компания" aria-label="Search" name="search_query">
                 <button class="btn_bigger search_inp_btn_main" type="submit">Найти</button>
@@ -272,8 +272,6 @@
     </div>
 </section>
 
-
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
     var showMoreButton = document.getElementById('showMoreRegions');
@@ -342,10 +340,38 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
-
 </script>
+<script>
+    // Функция для сохранения текущей вкладки в localStorage
+    function saveActiveTab(tabId) {
+        localStorage.setItem('activeTab', tabId);
+    }
 
+    // Функция для получения текущей вкладки из localStorage
+    function getActiveTab() {
+        return localStorage.getItem('activeTab');
+    }
+
+    // При загрузке страницы проверяем, есть ли сохраненная вкладка в localStorage и активируем ее
+    document.addEventListener('DOMContentLoaded', function() {
+        const activeTab = getActiveTab();
+        if (activeTab) {
+            const tabButton = document.querySelector(activeTab);
+            if (tabButton) {
+                tabButton.click();
+            }
+        }
+    });
+
+    // Обработчик события для сохранения текущей вкладки при ее активации
+    const tabButtons = document.querySelectorAll('.link_vacancy_changer');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabId = '#' + this.getAttribute('id');
+            saveActiveTab(tabId);
+        });
+    });
+</script>
 
 
 @endsection

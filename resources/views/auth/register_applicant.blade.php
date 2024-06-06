@@ -16,17 +16,17 @@
     @endif
 
     <div class="mb-3">
-        <label for="" class="form-label">Имя</label>
+        <label for="first_name" class="form-label">Имя</label>
         <input type="text" value="{{ old('first_name') }}" class="form-control form-control-for-candidate"  id="first_name" name="first_name" autofocus>
     </div>
 
     <div class="mb-3">
-        <label for="" class="form-label">Фамилия</label>
+        <label for="last_name" class="form-label">Фамилия</label>
         <input class="form-control form-control-for-candidate" type="text" id="last_name" name="last_name" value="{{ old('last_name') }}" >
     </div>
 
     <div class="select_size_candidate mb-3">
-        <label for="" class="form-label">Пол</label>
+        <label for="gender" class="form-label">Пол</label>
         <select class="form-select" id="gender" name="gender"  aria-label="Default select example">
             <option value="Мужчина">Мужчина</option>
             <option value="Женщина">Женщина</option>
@@ -34,22 +34,22 @@
     </div>
 
     <div class="mb-3">
-        <label for="" class="form-label">Дата рождения</label>
+        <label for="birth_date" class="form-label">Дата рождения</label>
         <input class="form-control form-control-for-candidate" type="date" id="birth_date" name="birth_date" value="{{ old('birth_date') }}" >
     </div>
 
     <div class="mb-3">
-        <label for="" class="form-label">Телефон</label>
+        <label for="phone" class="form-label">Телефон</label>
         <input class="form-control form-control-for-candidate" type="tel" id="phone" name="phone" value="{{ old('phone') }}" >
     </div>
 
     <div class="mb-3">
-        <label for="" class="form-label">Email</label>
+        <label for="email" class="form-label">Email</label>
         <input type="email" value="{{ old('email') }}" class="form-control form-control-for-candidate"  id="email" name="email">
     </div>
     
     <div class="mb-3">
-        <label for="" class="form-label">Регион</label>
+        <label for="region_id" class="form-label">Регион</label>
         <select class="form-select" id="region_id" name="region_id">
             <option value="">Выберите регион</option>
             @foreach($regions as $region)
@@ -59,7 +59,7 @@
     </div>
 
     <div class="select_size_candidate mb-3">
-        <label for="" class="form-label">Статус поиска работы</label>
+        <label for="status" class="form-label">Статус поиска работы</label>
         <select class="form-select" id="status" name="status"  aria-label="Default select example">
             <option value="Активно ищу работу">Активно ищу работу</option>
             <option value="Рассматриваю предложения">Рассматриваю предложения</option>
@@ -68,13 +68,13 @@
     </div>
 
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Пароль</label>
+        <label for="password" class="form-label">Пароль</label>
         <input type="password" class="form-control form-control-for-candidate" name="password" id="password" >
         <div id="passHelp" class="form-text">Пароль должен быть не менее 8 символов.</div>
     </div>
 
     <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Повторите пароль</label>
+        <label for="password_confirmation" class="form-label">Повторите пароль</label>
         <input type="password" class="form-control form-control-for-candidate" name="password_confirmation"  id="password_confirmation">
     </div>
 

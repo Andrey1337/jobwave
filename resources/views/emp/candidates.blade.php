@@ -18,7 +18,7 @@
     // Ждем загрузки всего документа
     $(document).ready(function() {
         // Показываем уведомление
-        $('.toast').toast('show');
+        $('.succ').toast('show');
     });
     </script>
     <!-- Ваша текущая разметка для вывода списка вакансий -->
@@ -41,9 +41,10 @@
     <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane table-responsive-md fade show active " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
                 <div class="candidates_group_blocks_main p-2 p-xl-1 p-xxl-0">
-                    @foreach ($responses->where('status', 'В ожидании') as $response)
+                    @forelse ($responses->where('status', 'В ожидании') as $response)
                     @if ($response->resume)
                     <div class="candidate_group_block_inner">
+
                     <img src="{{ asset('storage/photos/' . $response->resume->photo_path) }}" alt="Candidate Avatar" class="img_candidate_logo">
                     <div class="candidate_block">
                         <a href="{{ route('resume.showAll', ['id' => $response->resume->id]) }}" class="candidate_block_title">{{ $response->resume->job_title }}</a>
@@ -62,7 +63,7 @@
                                 $interval = $startDate->diff($endDate);
                                 $totalExperience += $interval->y;
                             }
-                            $experienceText = $totalExperience >= 1 ? 'От ' . $totalExperience . ' лет' : 'Меньше года';
+                            $experienceText = $totalExperience >= 1 ? 'от ' . $totalExperience . ' лет' : 'меньше года';
                             @endphp
                             <p class="candidate_block_experience">Опыт работы: {{ $experienceText }}</p>
                         
@@ -93,18 +94,30 @@
                             </select>
                             <button type="submit" class="btn_outline_14 align-items-center">Изменить статус</button>
                         </form>
-                    
+                            
+                        
                     </div>
+                    <form class="delete_response" action="{{ route('responses.delete', $response->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот отклик?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#777777" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
                 @endif
-                @endforeach
+                @empty
+                <p class="text-center text_not_p">Откликов нет.</p>
+                @endforelse
                 </div>
             
         </div>
     
         <div class="tab-pane table-responsive-md fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
             <div class="candidates_group_blocks_main p-2 p-xl-1 p-xxl-0">
-                    @foreach ($responses->where('status', 'Принят') as $response)
+                    @forelse ($responses->where('status', 'Принят') as $response)
                     @if ($response->resume)
                     <div class="candidate_group_block_inner_green">
                     <img src="{{ asset('storage/photos/' . $response->resume->photo_path) }}" alt="Candidate Avatar" class="img_candidate_logo">
@@ -158,16 +171,27 @@
                         </form>
                     
                     </div>
+                    <form class="delete_response" action="{{ route('responses.delete', $response->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот отклик?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#777777" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
                 @endif
-                @endforeach
+                @empty
+                <p class="text-center text_not_p">Откликов нет.</p>
+                @endforelse
             
         </div>
-    </div>
+        </div>
         
         <div class="tab-pane table-responsive-md fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
             <div class="candidates_group_blocks_main p-2 p-xl-1 p-xxl-0">
-                @foreach ($responses->where('status', 'Отклонен') as $response)
+                @forelse ($responses->where('status', 'Отклонен') as $response)
                 @if ($response->resume)
                 <div class="candidate_group_block_inner_red">
                 <img src="{{ asset('storage/photos/' . $response->resume->photo_path) }}" alt="Candidate Avatar" class="img_candidate_logo">
@@ -221,9 +245,20 @@
                     </form>
                 
                 </div>
+                <form class="delete_response" action="{{ route('responses.delete', $response->id) }}" method="POST" onsubmit="return confirm('Вы уверены, что хотите удалить этот отклик?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#777777" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        </button>
+                    </form>
             </div>
             @endif
-            @endforeach
+            @empty
+                <p class="text-center text_not_p">Откликов нет.</p>
+                @endforelse
             
             </div>
     </div>
@@ -274,13 +309,6 @@
         });
     </script>
 
-
-
-
-    <form method="post" class="d-none" action="{{route('logout_employer')}}">
-        @csrf
-        <button class="btn_bigger_main">Выйти</button>
-    </form>
 
 </div>
 

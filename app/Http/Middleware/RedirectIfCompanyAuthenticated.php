@@ -18,7 +18,7 @@ class RedirectIfCompanyAuthenticated
     {
 
         if (Auth::guard('company')->check()) {
-            return redirect('/dashboard_employer'); // Или на другой маршрут, куда вы хотите перенаправить авторизованных компаний
+            return redirect()->back(); // Или на другой маршрут, куда вы хотите перенаправить авторизованных компаний
         }
 
         return $next($request);

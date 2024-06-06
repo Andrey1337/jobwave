@@ -11,6 +11,7 @@ use App\Models\JobSkill;
 use App\Models\Resume;
 use App\Models\Region;
 use App\Models\Review;
+use App\Models\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,19 @@ class EmployerController extends Controller
 {
     public function main(){
         return view("main_for_emp");
+    }
+
+    public function about_us(){
+        return view("about_company");
+    }
+    public function contacts(){
+        return view("contacts");
+    }
+    public function help_page(){
+        return view("help_page");
+    }
+    public function privacy_policy(){
+        return view("privacy_policy");
     }
 
     public function dashboard_view(){
@@ -252,7 +266,6 @@ class EmployerController extends Controller
     return view('search_main', ['vacancies' => $jobs, 'regions' => $regions, 'countVacancies' => $countVacancies]);
 }
 
-    
 
     public function addReview(Request $request, $companyId)
     {
@@ -288,6 +301,18 @@ class EmployerController extends Controller
      $responses = $employer->responses()->with(['resume.user'])->get();
  
      return view('emp.candidates', ['responses' => $responses]);
+}
+
+public function deleteResponse($id)
+{
+    // Поиск отклика по его ID
+    $response = Response::findOrFail($id);
+
+    // Удаление отклика
+    $response->delete();
+
+    // Редирект с сообщением об успешном удалении
+    return redirect()->back()->with('success', 'Отклик успешно удален.');
 }
 
 

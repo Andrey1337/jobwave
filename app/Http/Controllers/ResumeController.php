@@ -6,6 +6,8 @@ use App\Models\Specialization;
 use App\Models\Skill;
 use App\Models\WorkExperience;
 use App\Models\Resume;
+use App\Models\Region;
+use App\Models\Company;
 use App\Models\ResumeSkill;
 use App\Models\Education;
 use App\Models\User;
@@ -22,8 +24,8 @@ class ResumeController extends Controller
     {
         $specializations = Specialization::all(); // Получаем список специализаций
         $skills = Skill::all(); // Получаем список всех навыков из базы данных
-        $employmentTypes = ['полная занятость', 'частичная занятость', 'стажировка'];
-        $workSchedules = ['полный день', 'гибкий график', 'удаленная работа'];
+        $employmentTypes = ['Полная занятость', 'Частичная занятость', 'Стажировка'];
+        $workSchedules = ['Полный день', 'Сменный график', 'Гибкий график', 'Удаленная работа', 'Вахтовый метод'];
 
         return view('applicant.create_resume', compact('specializations', 'skills', 'employmentTypes', 'workSchedules'));
     }
@@ -114,12 +116,14 @@ class ResumeController extends Controller
         // Обработка файла изображения
         $photo = $request->file('photo');
         $filename = uniqid() . '.' . $photo->getClientOriginalExtension();
-        $photo->storeAs('photos', $filename); // Сохранение изображения в хранилище
-        $resume->photo_path = 'photos/' . $filename;
+        $photo->storeAs('photos', $filename, 'public'); // Сохранение изображения в хранилище
+        $resume->photo_path = $filename;
     } else {
         // Установка изображения по умолчанию
         $resume->photo_path = 'default_user.png';
     }
+
+    
         
 
     
@@ -369,6 +373,41 @@ class ResumeController extends Controller
         return redirect()->route('show', ['id' => $request->job_id])->with('success', 'Отклик успешно отправлен.');
     }
 
+    public function proposeJob(Request $request)
+    {
+        // Валидация данных формы
+        $request->validate([
+            'job_id' => 'required|exists:jobs,id',
+            'user_id' => 'required|exists:users,id',
+            'resume_id' => 'required|exists:resumes,id',
+        ]);
+
+        // Создание нового отклика
+        $response = new Response();
+        $response->job_id = $request->job_id;
+        $response->user_id = $request->user_id;
+        $response->resume_id = $request->resume_id;
+        $response->status = 'Принят'; // Можете использовать любое значение для статуса
+
+        // Сохранение отклика в базе данных
+        $response->save();
+        // Получаем предыдущий статус отклика
+        $previousStatus = $response->status;
+         // Обновляем счетчик приглашений резюме
+        $resume = Resume::find($response->resume_id);
+        if ($response->status === 'Принят') {
+            // Если статус изменен на "Принят", увеличиваем счетчик приглашений
+            $resume->invitations_count += 1;
+        } elseif ($previousStatus === 'Принят') {
+            // Если предыдущий статус был "Принят", а новый не "Принят", уменьшаем счетчик приглашений
+            $resume->invitations_count -= 1;
+        }
+        // Сохраняем изменения
+        $resume->save();
+        // Редирект на страницу с вакансиями или другой нужной страницей с сообщением об успешном предложении
+        return redirect()->route('search_resume')->with('success', 'Вакансия успешно предложена соискателю.');
+    }
+
 
     public function changeStatus(Request $request, Response $response)
     {
@@ -410,5 +449,108 @@ class ResumeController extends Controller
     }
 
 
+    public function showSearchForm()
+    {
+        $regions = Region::all();
+        $resumes = Resume::paginate(10); // Получаем все резюме
+        $jobs = [];
+        if (Auth::guard('company')->check()) {
+            $company = Auth::guard('company')->user();
+            $jobs = Job::where('company_id', $company->id)->get(); // Получаем вакансии компании, к которой относится текущий пользователь
+        }        // Получаем количество всех вакансий
+        $countResumes = $resumes->total(); // Используем метод total() для получения общего количества резюме с учетом пагинации
+        return view('search_resume', compact('regions', 'countResumes', 'resumes', 'jobs'));
+    }
+
+    public function search(Request $request)
+    {
+        // Получаем данные из запроса
+        $selectedRegions = $request->input('regions');
+        $selectedSchedules = $request->input('work_schedule');
+        $selectedEmploymentTypes = $request->input('employment_type');
+        $selectedRelocate = $request->input('willing_to_relocate');
+        $selectedTravel = $request->input('willing_to_travel');
+        $searchQuery = $request->input('search_query');
+        $selectedIncomeLevels = $request->input('desired_salary_min');
+
+        // Начинаем строить запрос для фильтрации резюме
+        $resumes = Resume::query()
+        ->whereHas('user', function ($query) use ($selectedRegions) {
+            if (!empty($selectedRegions)) {
+                $query->whereIn('region_id', $selectedRegions);
+            }
+        });
+
+        // Фильтрация по графику работы
+        if (!empty($selectedSchedules)) {
+            $resumes->where(function ($query) use ($selectedSchedules) {
+                foreach ($selectedSchedules as $schedule) {
+                    $query->orWhere('work_schedule', 'like', '%' . $schedule . '%');
+                }
+            });
+        }
+
+        // Фильтрация по типу занятости
+        if (!empty($selectedEmploymentTypes)) {
+            $resumes->whereIn('employment_type', $selectedEmploymentTypes);
+        }
+
+        // Фильтрация по готовности к переезду
+        if (!empty($selectedRelocate)) {
+            $resumes->whereIn('willing_to_relocate', $selectedRelocate);
+        }
+
+        // Фильтрация по готовности к командировкам
+        if (!empty($selectedTravel)) {
+            $resumes->whereIn('willing_to_travel', $selectedTravel);
+        }
+
+        // Определяем диапазоны для каждого уровня дохода
+        $incomeLevelRanges = [
+            'от 20 000₽' => [20000, PHP_INT_MAX],
+            'от 35 000₽' => [35000, PHP_INT_MAX],
+            'от 50 000₽' => [50000, PHP_INT_MAX],
+            'от 75 000₽' => [75000, PHP_INT_MAX],
+            'от 100 000₽' => [100000, PHP_INT_MAX],
+        ];
+
+        // Фильтрация по уровню дохода
+        if (!empty($selectedIncomeLevels)) {
+            $resumes->where(function ($query) use ($selectedIncomeLevels, $incomeLevelRanges) {
+                foreach ($selectedIncomeLevels as $incomeLevel) {
+                    if (isset($incomeLevelRanges[$incomeLevel])) {
+                        $range = $incomeLevelRanges[$incomeLevel];
+                        $query->orWhereBetween('desired_salary_min', $range);
+                    }
+                }
+            });
+        }
+
+        // Если указан поисковой запрос, применяем его
+        if (!empty($searchQuery)) {
+            $resumes->where('job_title', 'like', '%' . $searchQuery . '%');
+        }
+
+        // Получаем отфильтрованные резюме
+        $resumes = $resumes->paginate(10);
+
+        // Получаем список всех регионов
+        $regions = Region::all();
+
+        $countResumes = $resumes->count(); // Общее количество отфильтрованных резюме
+
+        // Передаем отфильтрованные данные и список регионов в представление
+        return view('search_resume', ['resumes' => $resumes, 'regions' => $regions, 'countResumes' => $countResumes]);
+    }
+
+    public function resetFiltersResume()
+    {
+        // Очистка сессионных данных с фильтрами
+        session()->forget(['searchQuery', 'incomeLevelRanges', 'selectedTravel', 'selectedRelocate', 'selectedEmploymentTypes', 'selectedSchedules', 'selectedRegions', ]);
+    
+        // Перенаправление обратно на страницу поиска
+        return redirect()->route('search_resume');
+    }
+    
 
 }

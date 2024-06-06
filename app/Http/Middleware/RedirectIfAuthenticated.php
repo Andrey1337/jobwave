@@ -12,7 +12,7 @@ class RedirectIfAuthenticated
     {
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect('/'); // Или на другой маршрут, куда вы хотите перенаправить авторизованных пользователей
+                return redirect()->back(); // Или на другой маршрут, куда вы хотите перенаправить авторизованных пользователей
             }
         }
 

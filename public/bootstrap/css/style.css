@@ -139,6 +139,17 @@ body{
 
 .navbar-brand{
     padding: 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.navbar-brand2{
+    padding: 0;
+    display: flex;
+    gap: 27px;
+    align-items: center;
+    text-decoration: none;
 }
 
 .btn_stock{
@@ -272,7 +283,28 @@ body{
     font-family: 'MulishB';
     border-radius: 4px;
     text-decoration: none;
-    
+}
+
+.btn_bigger_main_reverse{
+    padding: 20px 32px;
+    border: 1px solid #4399E1;
+    text-align: center;
+    color: #4399E1;
+    font-size: 16px;
+    font-family: 'MulishB';
+    border-radius: 4px;
+    text-decoration: none;
+    transition: linear 0.2s !important;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn_bigger_main_reverse:hover{
+    transition: linear 0.2s !important;
+    background-color: #4399E1;
+    color: #fff;
 }
 
 @media (max-width: 575px) {
@@ -1055,6 +1087,11 @@ margin: 0 auto; */
     padding-bottom: 20px;
 }
 
+.cards_resume_main_block_info_income_level_vacancy{
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+
 .cards_vacancy_main_block_info_company_vacancy, .cards_vacancy_main_block_info_company_city_vacancy{
     font-size: 16px;
 }
@@ -1066,6 +1103,22 @@ margin: 0 auto; */
     /* padding-bottom: 56px; */
     padding-bottom: 74px;
 
+}
+
+.cards_resumes_main_block_info_experience_and_icon_vacancy{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 20px;
+    /* padding-bottom: 56px; */
+    padding-bottom: 74px;
+
+}
+
+.icon_with_resum_info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .btn_response{
@@ -2628,6 +2681,7 @@ margin: 0 auto; */
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
 }
 
 .candidate_block_last_job_date, .candidate_block_last_company_name, .candidate_block_phone{
@@ -2664,4 +2718,82 @@ margin: 0 auto; */
 
 .connect_us_block{
     display: flex;
+}
+
+
+/* ABOUT COMPANY JOBWAVE BLOCK */
+
+.about_company_area{
+    max-width: 900px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.about_company_blocks_group{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.about_company_block_p_two{
+    margin-top: 15px;
+}
+
+.about_company_block_h{
+    font-size: 24px;
+    font-family: "MulishSM";
+    margin-bottom: 15px;
+}
+
+.about_company_block_h2{
+    font-size: 15px;
+    font-family: "MulishSM";
+    margin-bottom: 10px;
+}
+
+.br_acbh2{
+    margin-top: 15px;
+}
+
+.about_company_block_p{
+    font-size: 14px;
+    font-family: "MulishR";
+}
+
+.bold_text{
+    font-family: "MulishSM";
+}
+
+.blue_p{
+    text-decoration: underline;
+    color: #346B99;
+}
+
+.help_page_area{
+    max-width: 700px;
+    display: flex;
+    margin: 0 auto;
+    
+}
+
+.li_privacy_policy{
+    font-size: 14px;
+    font-family: "MulishR";
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+.delete_response{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.text_not_p{
+    margin-top: 150px;
+    
+    font-family: 'MulishR';
+    font-size: 16px;
 }
