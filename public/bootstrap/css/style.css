@@ -105,7 +105,9 @@ body{
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
 }
 
 .top_header{
@@ -118,6 +120,10 @@ body{
     display: flex;
     gap: 10px;
     align-items: center;
+}
+
+main{
+    margin-bottom: 150px;
 }
 
 
@@ -190,7 +196,7 @@ body{
 /* FOOTER  */
 
 .footer {
-    margin-top: 150px;
+    margin-top: auto;
     background-color: #428AC7;
 }
 
@@ -2796,4 +2802,10 @@ margin: 0 auto; */
     
     font-family: 'MulishR';
     font-size: 16px;
+}
+
+.alert_without_something{
+    max-width: 360px;
+    margin-top: 10px;
+
 }

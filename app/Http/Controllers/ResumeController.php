@@ -358,6 +358,17 @@ class ResumeController extends Controller
             'job_id' => 'required|exists:jobs,id',
             'user_id' => 'required|exists:users,id',
         ]);
+        // Проверка на существование отклика от этого пользователя на эту вакансию
+        $existingResponse = Response::where('resume_id', $request->resume_id)
+                                    ->where('job_id', $request->job_id)
+                                    ->where('user_id', $request->user_id)
+                                    ->first();
+
+        if ($existingResponse) {
+            // Если отклик уже существует, вернуть ошибку
+            return redirect()->route('show', ['id' => $request->job_id])
+                            ->with('success', 'Вы уже откликнулись на эту вакансию.');
+        }
     
         // Создание нового отклика
         $response = new Response();
@@ -381,6 +392,17 @@ class ResumeController extends Controller
             'user_id' => 'required|exists:users,id',
             'resume_id' => 'required|exists:resumes,id',
         ]);
+        // Проверка на существование отклика от соискателя на эту вакансию
+            $existingResponse = Response::where('resume_id', $request->resume_id)
+            ->where('job_id', $request->job_id)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if ($existingResponse) {
+        // Если отклик уже существует, вернуть ошибку
+        return redirect()->route('search_resume')
+        ->with('success', 'Соискатель уже откликнулся на эту вакансию.');
+        }
 
         // Создание нового отклика
         $response = new Response();
@@ -539,8 +561,13 @@ class ResumeController extends Controller
 
         $countResumes = $resumes->count(); // Общее количество отфильтрованных резюме
 
+        if (Auth::guard('company')->check()) {
+            $company = Auth::guard('company')->user();
+            $jobs = Job::where('company_id', $company->id)->get(); // Получаем вакансии компании, к которой относится текущий пользователь
+        }        // Получаем количество всех вакансий
+
         // Передаем отфильтрованные данные и список регионов в представление
-        return view('search_resume', ['resumes' => $resumes, 'regions' => $regions, 'countResumes' => $countResumes]);
+        return view('search_resume', ['jobs' => $jobs, 'resumes' => $resumes, 'regions' => $regions, 'countResumes' => $countResumes]);
     }
 
     public function resetFiltersResume()

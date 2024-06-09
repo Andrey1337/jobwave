@@ -1,6 +1,8 @@
 @extends('layouts.after_default_us')
 
 @section('content')
+        <p class="auth_employer_text_h">Создание резюме</p>
+
         <form class="form_register_vacancy" enctype="multipart/form-data" method="post" action="{{ route('applicant.resume.create.submit') }}">
             @csrf
             @if ($errors->any())

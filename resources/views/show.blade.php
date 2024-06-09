@@ -6,7 +6,15 @@
 
 
 @section('content')
-
+    @if (session('success'))
+        <div class=" succ" id="successAlert" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+            <div class="alert_default" >
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+ 
+    
     <section class="vacancy_inner_cards_area">
         <div class="container_main">
         <div class="vacancy_inner_cards_block justify-content-center justify-content-xl-start p-2 p-xl-2 p-xxl-0 ">
@@ -33,6 +41,12 @@
 
                 @if (Auth::check())
                     <!-- Button trigger modal -->
+                    @if ($resumes->isEmpty())
+                        <div class="alert alert-warning alert_without_something" role="alert">
+                            У вас нет резюме. Пожалуйста, создайте резюме перед тем, как откликнуться на вакансию. <br><br>
+                            <a href="{{ route('applicant.resume.create') }}" class="btn_outline_14">Создать резюме</a>
+                        </div>
+                    @else
                     <div class="vacancys_btns_block">
                     <button type="button" class="btn_response_bigger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Откликнуться
@@ -78,6 +92,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                 @else
                     <!-- Если пользователь не авторизован, выводим ссылку на страницу авторизации -->
@@ -85,6 +100,7 @@
                         <a href="{{route ('applicant.login')}}" class="btn_response_bigger">Откликнуться</a>
                     </div>
                 @endif
+                
 
             </div>
 
@@ -158,6 +174,7 @@
            
         </div>
     </section>
+    
     <script>
         function truncateText(elements, maxLength) {
             elements.forEach(function(element) {
